@@ -1,15 +1,20 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import com.google.gson.Gson;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        String apiKey = "57343c66eacc9c1f9939916c";  // API aquí
+        String url = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/USD";
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        // 1) Call API
+        ClienteHttp cliente = new ClienteHttp();
+        String json = cliente.obtenerDatos(url);
+
+        // 2) Parse JSON
+        Gson gson = new Gson();
+        ExchangeRateResponse rates = gson.fromJson(json, ExchangeRateResponse.class);
+
+        // 3) Menu launch
+        Conversor conversor = new Conversor();
+        conversor.exhibirMenu(rates);
     }
 }
